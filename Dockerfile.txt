@@ -1,0 +1,12 @@
+FROM dunglas/frankenphp:php8.4-bookworm
+
+RUN install-php-extensions mysqli pdo_mysql
+
+COPY . /app
+COPY Caddyfile /etc/caddy/Caddyfile
+
+WORKDIR /app
+
+EXPOSE 8080
+
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
