@@ -1,5 +1,10 @@
-﻿<?php
-session_start();
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Simpan username session sebelum config.php menimpa $username
+$sessionUsername = $_SESSION['username'] ?? null;
 
 include("config.php");
 
@@ -8,7 +13,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// 🧹 Proses Logout (jika user klik tombol logout)
+// 🧹 Proses Logout
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
@@ -16,12 +21,12 @@ if (isset($_GET['logout'])) {
     exit();
 }
 
-if (!isset($_SESSION['username'])) {
+if (empty($sessionUsername)) {
     header("Location: dashboard/dashboard.php");
     exit();
 }
 
-$username = $_SESSION['username'];
+$username = $sessionUsername;
 $sql = "SELECT user_nama, profile_image_blob, profile_image_type FROM user WHERE user_nama = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $username);
