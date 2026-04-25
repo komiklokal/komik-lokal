@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $db_host = "shuttle.proxy.rlwy.net";
 $db_port = 43672;
 $db_user = "root";
