@@ -1,12 +1,19 @@
-FROM dunglas/frankenphp:php8.4-bookworm
+FROM php:8.2-apache
 
-RUN install-php-extensions mysqli pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-COPY . /app
-COPY Caddyfile /etc/caddy/Caddyfile
+RUN a2enmod rewrite
 
-WORKDIR /app
+COPY . /var/www/html/
 
-EXPOSE 8080
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 755 /var/www/html
 
-CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
+RUN echo '<Directory /var/www/html>\n\
+    Options Indexes FollowSymLinks\n\
+    AllowOverride All\n\
+    Require all granted\n\
+</Directory>' > /etc/apache2/conf-available/allow-override.conf \
+    && a2enconf allow-override
+
+EXPOSE 80
