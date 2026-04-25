@@ -1,4 +1,29 @@
-﻿<!DOCTYPE html>
+<?php
+session_start();
+// [KEAMANAN] Generate CSRF token untuk form login
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$hasError = false;
+$errorType = '';
+$errorMessage = '';
+$hasSuccess = false;
+$successMessage = '';
+if (isset($_SESSION['login_error'])) {
+    $hasError = true;
+    $errorType = $_SESSION['login_error'];
+    $errorMessage = $_SESSION['login_error_message'];
+    unset($_SESSION['login_error']);
+    unset($_SESSION['login_error_message']);
+}
+if (isset($_SESSION['reset_success'])) {
+    $hasSuccess = true;
+    $successMessage = $_SESSION['reset_success_message'];
+    unset($_SESSION['reset_success']);
+    unset($_SESSION['reset_success_message']);
+}
+?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -71,30 +96,6 @@
     </style>
 </head>
 <body>
-    <?php
-    session_start();
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    $hasError = false;
-    $errorType = '';
-    $errorMessage = '';
-    $hasSuccess = false;
-    $successMessage = '';
-    if (isset($_SESSION['login_error'])) {
-        $hasError = true;
-        $errorType = $_SESSION['login_error'];
-        $errorMessage = $_SESSION['login_error_message'];
-        unset($_SESSION['login_error']);
-        unset($_SESSION['login_error_message']);
-    }
-    if (isset($_SESSION['reset_success'])) {
-        $hasSuccess = true;
-        $successMessage = $_SESSION['reset_success_message'];
-        unset($_SESSION['reset_success']);
-        unset($_SESSION['reset_success_message']);
-    }
-    ?>
     <div id="loginContent">
     <div class="background">
         <div class="shape shape-1"></div>
