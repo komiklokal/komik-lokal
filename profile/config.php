@@ -1,10 +1,11 @@
-﻿<?php
-$host = "localhost";
-$username = "komiklokal_user";
-$password = "K0m1kL0k4l#2026";
-$dbname = "komiklokal"; 
+<?php
+$host = "shuttle.proxy.rlwy.net";
+$port = 43672;
+$username = "root";
+$password = "xlKyFgwrlZYACzUskiHKIwypNgDbKcic";
+$dbname = "railway";
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
     die("Koneksi gagal: " . $conn->connect_error);
