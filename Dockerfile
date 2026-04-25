@@ -1,41 +1,35 @@
-FROM php:8.2-apache
+FROM php:8.2-fpm-alpine
 
-# Fix: Nonaktifkan MPM yang konflik, aktifkan hanya mpm_prefork
-RUN a2dismod mpm_event mpm_worker 2>/dev/null || true \
-    && a2enmod mpm_prefork
+# Install nginx dan bash
+RUN apk add --no-cache nginx bash
 
-# Install ekstensi mysqli dan pdo_mysql
+# Install ekstensi PHP
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Aktifkan mod_rewrite untuk Apache
-RUN a2enmod rewrite
+# Buat folder nginx
+RUN mkdir -p /run/nginx
 
-# Copy semua file project ke dalam container
+# Copy konfigurasi nginx
+COPY nginx.conf /etc/nginx/http.d/default.conf
+
+# Copy semua file project
 COPY . /var/www/html/
 
-# Hapus file SQL besar agar tidak masuk image
+# Hapus file SQL besar agar image lebih kecil
 RUN rm -f /var/www/html/*.sql
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Apache config: izinkan .htaccess override
-RUN echo '<Directory /var/www/html>\n\
-    Options Indexes FollowSymLinks\n\
-    AllowOverride All\n\
-    Require all granted\n\
-</Directory>' > /etc/apache2/conf-available/allow-override.conf \
-    && a2enconf allow-override
-
-# Script entrypoint: set Apache port dari $PORT Railway
-RUN echo '#!/bin/bash\n\
+# Entrypoint: set PORT dari Railway, jalankan php-fpm + nginx
+RUN printf '#!/bin/sh\n\
 export PORT=${PORT:-80}\n\
-sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf\n\
-sed -i "s/:80>/:$PORT>/" /etc/apache2/sites-enabled/000-default.conf\n\
-apache2-foreground' > /entrypoint.sh \
+sed -i "s/listen 80/listen $PORT/g" /etc/nginx/http.d/default.conf\n\
+php-fpm -D\n\
+exec nginx -g "daemon off;"\n' > /entrypoint.sh \
     && chmod +x /entrypoint.sh
 
 EXPOSE 80
 
-CMD ["/bin/bash", "/entrypoint.sh"]
+CMD ["/bin/sh", "/entrypoint.sh"]
