@@ -8,20 +8,18 @@ $dbname = "railway";
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+    error_log("Database connection failed: " . $conn->connect_error);
+    die("Terjadi kesalahan sistem. Silakan coba lagi nanti.");
 }
-
 if (!defined('ALLOW_GUEST_ACCESS')) {
     define('ALLOW_GUEST_ACCESS', false);
 }
-
 if (!function_exists('auth_bootstrap')) {
     function auth_bootstrap()
     {
         if (session_status() === PHP_SESSION_NONE) {
             @session_start();
         }
-
         if (defined('ALLOW_GUEST_ACCESS') && ALLOW_GUEST_ACCESS) {
             if (!isset($_SESSION['username']) || $_SESSION['username'] === '') {
                 $_SESSION['username'] = 'Guest';
@@ -30,13 +28,11 @@ if (!function_exists('auth_bootstrap')) {
         }
     }
 }
-
 if (!function_exists('is_guest')) {
     function is_guest()
     {
         return !empty($_SESSION['is_guest']);
     }
 }
-
 auth_bootstrap();
 ?>
