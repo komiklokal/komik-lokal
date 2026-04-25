@@ -1,23 +1,26 @@
-﻿<?php
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     @session_start();
 }
+// Simpan username session SEBELUM include config
+$sessionUsername = $_SESSION['username'] ?? null;
+$isLoggedIn = !empty($sessionUsername);
+
 include("config.php");
-$isLoggedIn = isset($_SESSION['username']);
-$username = $isLoggedIn ? $_SESSION['username'] : null;
+
 $userData = null;
 if ($isLoggedIn) {
     $sql = "SELECT user_nama, profile_image_blob, profile_image_type FROM user WHERE user_nama = ?";
     $stmt = $conn->prepare($sql);
     if ($stmt) {
-        $stmt->bind_param("s", $username);
+        $stmt->bind_param("s", $sessionUsername);
         $stmt->execute();
         $result = $stmt->get_result();
         $userData = $result->fetch_assoc();
         $stmt->close();
     }
     $userData = $userData ?: [
-        'user_nama' => $username,
+        'user_nama' => $sessionUsername,
         'profile_image_blob' => null,
         'profile_image_type' => null,
     ];
