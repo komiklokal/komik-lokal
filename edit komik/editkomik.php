@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (session_status() === PHP_SESSION_NONE) {
     @session_start();
 }
@@ -1649,11 +1649,11 @@ $commentListStmt->close();
                             });
 
                             let payload = null;
+                            const rawText = await res.text();
                             try {
-                                payload = await res.json();
+                                payload = JSON.parse(rawText);
                             } catch (_) {
-                                const text = await res.text();
-                                throw new Error(text || 'Terjadi kesalahan saat menyimpan perubahan.');
+                                throw new Error(rawText || 'Terjadi kesalahan saat menyimpan perubahan.');
                             }
 
                             setPageLoading(false);
