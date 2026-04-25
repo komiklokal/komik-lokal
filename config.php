@@ -1,9 +1,11 @@
+config.php
+
 <?php
-$host     = getenv('DB_HOST')     ?: 'mysql.railway.internal';
+$host     = getenv('DB_HOST')     ?: 'shuttle.proxy.rlwy.net ';
 $username = getenv('DB_USERNAME') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: 'MowQxljMoqBRmkaWJjILELqKtXVdFFUS';
+$password = getenv('DB_PASSWORD') ?: 'xlKyFgwrlZYACzUskiHKIwypNgDbKcic ';
 $dbname   = getenv('DB_NAME')     ?: 'railway';
-$port     = (int)(getenv('DB_PORT') ?: 3306);
+$port     = (int)(getenv('DB_PORT') ?: 43672 );
 
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
