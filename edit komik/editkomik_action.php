@@ -1,5 +1,7 @@
 <?php
+ob_start(); 
 include("config.php");
+ob_clean(); 
 
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
