@@ -1,21 +1,16 @@
 <?php
-$host     = getenv('DB_HOST')     ?: 'mysql.railway.internal';
-$username = getenv('DB_USERNAME') ?: 'root';
-$password = getenv('DB_PASSWORD') ?: 'xlKyFgwrlZYACzUskiHKIwypNgDbKcic ';
-$dbname   = getenv('DB_NAME')     ?: 'railway';
-$port     = (int)(getenv('DB_PORT') ?: 43672 );
+$host = "shuttle.proxy.rlwy.net";
+$port = 43672;
+$username = "root";
+$password = "xlKyFgwrlZYACzUskiHKIwypNgDbKcic";
+$dbname = "railway";
 
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
-    error_log("DB connection failed: " . $conn->connect_error);
-    die("Terjadi kesalahan sistem. Silakan coba lagi nanti.");
+    die("Koneksi gagal: " . $conn->connect_error);
 }
 
-if (!$conn->select_db($dbname)) {
-    error_log("Failed to select database: " . $dbname);
-    die("Database tidak ditemukan.");
-}
 if (!defined('ALLOW_GUEST_ACCESS')) {
     define('ALLOW_GUEST_ACCESS', false);
 }
