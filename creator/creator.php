@@ -1,5 +1,4 @@
-﻿<?php include("creator_action.php"); ?>
-<!DOCTYPE html>
+<?php include("creator_action.php"); ?><!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8">
