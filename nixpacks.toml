@@ -1,0 +1,8 @@
+[phases.build]
+cmds = []
+
+[start]
+cmd = "apache2-foreground"
+
+[variables]
+PHP_VERSION = "8.2"
