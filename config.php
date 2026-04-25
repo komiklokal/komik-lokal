@@ -1,15 +1,21 @@
-﻿<?php
-$host = "localhost";
-$username = "komiklokal_user";
-$password = "K0m1kL0k4l#2026";
-$dbname = "komiklokal"; 
+<?php
+$host     = getenv('DB_HOST')     ?: 'mysql.railway.internal';
+$username = getenv('DB_USERNAME') ?: 'root';
+$password = getenv('DB_PASSWORD') ?: 'MowQxljMoqBRmkaWJjILELqKtXVdFFUS';
+$dbname   = getenv('DB_NAME')     ?: 'railway';
+$port     = (int)(getenv('DB_PORT') ?: 3306);
 
-$conn = new mysqli($host, $username, $password, $dbname);
+$conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+    error_log("DB connection failed: " . $conn->connect_error);
+    die("Terjadi kesalahan sistem. Silakan coba lagi nanti.");
 }
 
+if (!$conn->select_db($dbname)) {
+    error_log("Failed to select database: " . $dbname);
+    die("Database tidak ditemukan.");
+}
 if (!defined('ALLOW_GUEST_ACCESS')) {
     define('ALLOW_GUEST_ACCESS', false);
 }
