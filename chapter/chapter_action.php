@@ -1,12 +1,17 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Simpan session username sebelum config.php menimpa $username
+$sessionUsername = $_SESSION['username'] ?? null;
+$isLoggedIn = !empty($sessionUsername);
+
 include("config.php");
-$isLoggedIn = isset($_SESSION['username']);
+
 $user_id = null;
 if ($isLoggedIn) {
-    $username = $_SESSION['username'];
     $stmt = $conn->prepare("SELECT id FROM user WHERE user_nama = ?");
-    $stmt->bind_param("s", $username);
+    $stmt->bind_param("s", $sessionUsername);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
