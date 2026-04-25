@@ -13,7 +13,7 @@ RUN a2enmod rewrite
 # Copy semua file project ke dalam container
 COPY . /var/www/html/
 
-# Hapus file SQL besar agar tidak masuk image (opsional, hemat space)
+# Hapus file SQL besar agar tidak masuk image
 RUN rm -f /var/www/html/*.sql
 
 # Set permissions
@@ -28,4 +28,14 @@ RUN echo '<Directory /var/www/html>\n\
 </Directory>' > /etc/apache2/conf-available/allow-override.conf \
     && a2enconf allow-override
 
+# Script entrypoint: set Apache port dari $PORT Railway
+RUN echo '#!/bin/bash\n\
+export PORT=${PORT:-80}\n\
+sed -i "s/Listen 80/Listen $PORT/" /etc/apache2/ports.conf\n\
+sed -i "s/:80>/:$PORT>/" /etc/apache2/sites-enabled/000-default.conf\n\
+apache2-foreground' > /entrypoint.sh \
+    && chmod +x /entrypoint.sh
+
 EXPOSE 80
+
+CMD ["/bin/bash", "/entrypoint.sh"]
