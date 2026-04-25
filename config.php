@@ -1,5 +1,5 @@
 <?php
-$host     = getenv('DB_HOST')     ?: 'mysql.railway.internal';
+$host     = getenv('DB_HOST')     ?: 'shuttle.proxy.rlwy.net';
 $username = getenv('DB_USERNAME') ?: 'root';
 $password = getenv('DB_PASSWORD') ?: 'xlKyFgwrlZYACzUskiHKIwypNgDbKcic ';
 $dbname   = getenv('DB_NAME')     ?: 'railway';
