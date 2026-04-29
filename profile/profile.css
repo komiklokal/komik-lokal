@@ -293,6 +293,7 @@ body {
         transform: translateY(0);
     }
 }
+
 @media (max-width: 768px) {
     .profile {
         flex-direction: column;
@@ -393,9 +394,24 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 60vh;
+    min-height: 75vh;
     padding: 2rem;
 }
+
+@media (max-width: 768px) {
+    .login-required {
+        min-height: 90vh;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-required {
+        min-height: 90vh;
+        padding: 1rem 0.5rem;
+    }
+}
+
 .login-prompt-card {
     background: white;
     border-radius: 20px;
@@ -474,7 +490,8 @@ body {
 [data-theme="dark"] .btn-register:hover {
     background: #a5b4fc;
     color: #2d3748;
-}/* navbar-brand icon forced blue */
+}
+
 .navbar-brand i {
     color: #667eea !important;
 }
@@ -482,7 +499,6 @@ body {
     color: #667eea !important;
 }
 
-/* navbar-brand unified style */
 .navbar-brand {
     display: flex;
     align-items: center;
