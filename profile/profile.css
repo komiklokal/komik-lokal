@@ -48,7 +48,7 @@ body {
     backdrop-filter: blur(10px);
     display: flex;
     align-items: center;
-    margin: 1.5rem auto;
+    margin: 2.5rem auto;
     padding: 2rem;
     width: min(900px, calc(100% - 2rem));
     border-radius: 20px;
