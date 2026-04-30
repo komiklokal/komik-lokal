@@ -8,7 +8,8 @@ $dbname = "railway";
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
 if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+    error_log("Database connection failed: " . $conn->connect_error);
+    die("Terjadi kesalahan sistem. Silakan coba lagi nanti.");
 }
 
 if (!defined('ALLOW_GUEST_ACCESS')) {
